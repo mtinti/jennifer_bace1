@@ -17,3 +17,12 @@ import os
 cwd = os.getcwd()
 cwd
 # %%
+import pandas as pd
+import numpy as np
+indf = pd.read_csv('../BACE1_pulldown/res_48.csv',index_col=[0])
+indf.head()
+
+# %%
+maxquant = pd.read_csv('../BACE1_pulldown/txt/proteinGroups.txt',sep='\t')
+maxquant.head()
+# %%

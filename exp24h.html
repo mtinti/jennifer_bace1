@@ -96,10 +96,10 @@
       //Desc -> Extended info, present in the tooltip
       let columnDefs = [
         {"targets": columns.indexOf('Gene_acc') , 
-        "visible": false, "searchable": true},
+        "visible": false, "searchable": false},
 
         {"targets": columns.indexOf('Gene_id') , 
-        "searchable": false },
+        "searchable": true },
 
         {"targets": columns.indexOf('Desc'), 
         "searchable": true },
@@ -116,7 +116,12 @@
           );
         }
       })
-
+      columnDefs.pop();
+      columnDefs.pop();
+      columnDefs.push( {"targets": columns.indexOf('desc2'), 
+        "searchable": true, "visible": false});
+      columnDefs.push( {"targets": columns.indexOf('ids2'), 
+        "searchable": true,"visible": false,});
       //start the datatable
       var table = $('#table').DataTable(
         {
