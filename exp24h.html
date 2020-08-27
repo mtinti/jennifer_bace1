@@ -171,13 +171,15 @@
 
     });
 
-    localStorage.removeItem('tour_current_step');
-    localStorage.removeItem('tour_end');
-    // Initialize the tour
-    tour.init();
+    $( document ).ready(function() {
+      localStorage.removeItem('tour_current_step');
+        localStorage.removeItem('tour_end');
+        // Initialize the tour
+        tour.init();
   
-    // Start the tour
-    tour.start();   
+        // Start the tour
+        tour.start();
+    });
 
 
 
