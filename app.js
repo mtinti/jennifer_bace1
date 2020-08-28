@@ -88,6 +88,80 @@ function moveRow(row, table) {
 
 }
 
+function add_margin(inarray){
+    //find the greatest absolute number
+    let max_value = Math.max.apply(null, inarray.map(Math.abs));
+    //and increase 1% margins
+    console.log('adjusting margins');
+    //
+    if (inarray[0]==0 && inarray[1]>0){
+        inarray[0] = inarray[0] - (max_value*0.01);
+        inarray[1] = inarray[1] + (max_value*0.01);
+        console.log('first item 0, second item >0');
+        return inarray;
+    }
+
+    if (inarray[0]==0 && inarray[1]<0){
+        inarray[0] = inarray[0] + (max_value*0.01);
+        inarray[1] = inarray[1] - (max_value*0.01);
+        console.log('first item 0, second item <0');
+        return inarray;
+    }
+
+    if (inarray[1]==0 && inarray[0]>0){
+        inarray[1] = inarray[1] - (max_value*0.01);
+        inarray[0] = inarray[0] + (max_value*0.01);
+        console.log('second item 0, first item <0');
+        return inarray;
+    }
+
+    if (inarray[1]==0 && inarray[0]<0){
+        inarray[1] = inarray[1] + (max_value*0.01);
+        inarray[0] = inarray[0] - (max_value*0.01);
+        console.log('second item 0, first item <0');
+        return inarray;
+    }
+
+    if (inarray[0]>0 && inarray[1]>0){
+        if (inarray[0] < inarray[1] ) {
+            inarray[0] = inarray[0] - (max_value*0.01)
+            inarray[1] = inarray[1] + (max_value*0.01)
+            console.log('both > 0');
+            return inarray;
+        }
+    }
+
+    if (inarray[0]<0 && inarray[1]<0){
+        if  (inarray[0] > inarray[1]){
+            inarray[0] = inarray[0] + (max_value*0.01)
+            inarray[1] = inarray[1] - (max_value*0.01)
+            console.log('both < 0');
+            return inarray;
+        }
+
+    }
+
+    if (inarray[0]<0 && inarray[1]>0){
+        
+        inarray[0] = inarray[0] - (max_value*0.01)
+        inarray[1] = inarray[1] + (max_value*0.01)
+        console.log('second item >0, first item <0');
+        return inarray;
+        
+
+    }
+
+    if (inarray[0]>0 && inarray[1]<0){
+        
+        inarray[0] = inarray[0] + (max_value*0.01)
+        inarray[1] = inarray[1] - (max_value*0.01)
+        console.log('second item <0, first item >0');
+        return inarray;
+        
+
+    }
+
+}
 
 
 
@@ -172,42 +246,19 @@ function scaterPlot(data, selection, in_width, in_height, unique_id, x_col, y_co
         return parseFloat(d[y_col]);
     });
 
+
+
     //tring to add more space to fit the circles 
     //at the boders -- needs rethinking -- 
     console.log('before: xExtent',xExtent,'yExtent',yExtent);
     var XextentMax = Math.max.apply(null, xExtent.map(Math.abs));
     var YextentMax = Math.max.apply(null, yExtent.map(Math.abs));
+
+    console.log('parse x');
+    xExtent = add_margin(xExtent);
+    console.log('parse y');
+    yExtent = add_margin(yExtent);
     
-    if (xExtent[0] < 0){
-        xExtent[0] = xExtent[0] - (XextentMax*0.05*-1)
-    }
-    else {
-        xExtent[0] = xExtent[0] + XextentMax*0.05
-    }
-
-    if (xExtent[1] < 0){
-        xExtent[1] = xExtent[1] - (XextentMax*0.05*-1)
-    }
-    else {
-        xExtent[1] = xExtent[1] + XextentMax*0.05
-    }
-
-
-    if (yExtent[0] < 0){
-        yExtent[0] = yExtent[0] - (YextentMax*0.05*-1)
-    }
-    else {
-        yExtent[0] = yExtent[0] - YextentMax*0.05
-    }
-
-    if (yExtent[1] < 0){
-        yExtent[1] = yExtent[1] - (YextentMax*0.05*-1)
-    }
-    else {
-        yExtent[1] = yExtent[1] + YextentMax*0.05
-    }
-
-
     console.log('after: xExtent',xExtent,'yExtent',yExtent);
 
     x.domain(xExtent).nice();
@@ -387,11 +438,14 @@ function scaterPlot(data, selection, in_width, in_height, unique_id, x_col, y_co
                     selected.push(element.id);
                 }
             });
+            
 
             //use a regex to find all the nodes in the datatable
             intable.columns( 0 ).search(selected.join('|'),true,false).draw();
             x.domain([s[0][0], s[1][0]].map(x.invert, x));
-            y.domain([s[1][1], s[0][1]].map(y.invert, y));
+            if (filp_Y){y.domain([s[0][1], s[1][1]].map(y.invert, y));}
+            else{y.domain([s[1][1], s[0][1]].map(y.invert, y));}
+            
             scatter.select(".brush").call(brush.move, null);
         }
         zoom();
