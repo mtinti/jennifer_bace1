@@ -9,7 +9,7 @@ This repository contains the web app code to visualize the BACE1 interactome in 
 
 ## Installation
 
-I recommend to clone this repository and deploy on render [onrender](https://https://render.com/)
+I recommend to clone this repository and deploy [onrender](https://https://render.com/)
 
 
 ## License
